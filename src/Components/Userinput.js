@@ -4,15 +4,37 @@ import { Bar } from "react-chartjs-2";
 import 'chart.js/auto';
 
 const HONE = styled.h2`
-  color: green;
-  margin-top: 30px;
-  margin-bottom: 40px;
+  color: black;
+  margin-top: 10px;
+  margin-bottom: 30px;
 `;
 const InputTarget = styled.input`
   width: 60%;
   border-radius: 5px;
   height: 45px;
 `;
+
+const mygenerateButton ={
+  width : "302px",
+  height : "40px",
+  display :"flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginLeft : "57px",
+  
+};
+const mytablestyle = {
+  width : "100%" ,
+  boxShadow : "2px 3px 2px 2px white",
+  borderRadius : "8px !important"
+};
+
+const mystylecard ={
+  marginTop: "60px",
+  width:"35%",
+  marginLeft : "400px",
+  boxShadow: "3px 3px 3px 3px black"
+};
 
 const selectOption = {
   display: "flex",
@@ -95,7 +117,6 @@ export default function Userinput() {
 
   const handleGenderChange = (e) => {
     setGender(e.target.value);
-    console.log(setGender(e.target.value));
   };
 
   const generateReport = () => {
@@ -106,12 +127,17 @@ export default function Userinput() {
     setShowReport(true);
   };
 
+  const totalUsers = youngster + adult + old;
+  const totalGenders = male + female;
+
   return (
     <>
+<div className="card" style={mystylecard}>
+    <div className="card-body">
+    <HONE>User Submission Form!</HONE>
       <div className="container">
-        <HONE>User Submission Form!</HONE>
         <form onSubmit={handleSubmit}>
-          Name:{" "}
+          Name: {" "}
           <InputTarget
           className="shadow-lg p-3 mb-5 bg-body-tertiary rounded"
             type="text"
@@ -120,17 +146,16 @@ export default function Userinput() {
             onChange={(e) => setName(e.target.value)}
             required
           />
-          <br /> <br />
-          Age: &nbsp;
+          <br /> 
+          Age:{""} &nbsp; &nbsp;
           <InputTarget
-          className="shadow-lg p-3 mb-5 bg-body-tertiary rounded"
+           className="shadow-lg p-3 mb-5 bg-body-tertiary rounded"
             type="number"
             placeholder="Enter your age"
             value={age}
             onChange={(e) => setAge(e.target.value)}
             required
-          />
-          <br /> <br />
+          /> 
 
           <div style={selectOption}>
             Gender:
@@ -143,7 +168,7 @@ export default function Userinput() {
                 checked={gender === "male"}
                 onChange={handleGenderChange}
                 required
-              />
+              /> {" "}
               Male
             </label>
 
@@ -156,31 +181,49 @@ export default function Userinput() {
                 checked={gender === "female"}
                 onChange={handleGenderChange}
                 required
-              />
+              /> {" "}
               Female
             </label>
           </div>
-
-          <br /> <br />
-          <button type="submit" className="btn btn-outline-success" style={{width: "365px"}}>
+          <br /> 
+          <button type="submit" className="btn btn-outline-success shadow" style={{width: "150px"}}>
+          <i className="fa-regular fa-circle-check" />{" "}
             {editingIndex !== null ? "Update" : "Submit"}
           </button>
           &nbsp;
           <button
-          style={{width: "365px"}}
+          style={{width: "150px"}}
             type="reset"
             value="Reset"
-            className="btn btn-outline-danger"
+            className="btn btn-outline-danger shadow"
             onClick={handleReset}
           >
+            <i className="fa-solid fa-clock-rotate-left" /> {" "}
             Reset
           </button>
         </form>
+        <br />
+        <a href="#AGD" style={{textDecoration: "none"}}>
+          <button onClick={generateReport} 
+            className="btn btn-outline-dark shadow p-3 mb-5 rounded "
+            style={mygenerateButton}>
+              <i className="fa-solid fa-chart-simple" />  &nbsp;
+            Generate Report
+        </button>
+        </a>
+       
+      </div>
+    </div>
+</div>
+
+      <div className="container ">
 
         {users.length > 0 && (
+          <>
+          <br />
           <table
-            style={{ width: "100%" }}
-            className="table-bordered table table-striped mt-4"
+            style={mytablestyle}
+            className="mt-5 table-bordered table table-striped  table-dark table-hover "
           >
             <thead>
               <tr>
@@ -201,6 +244,7 @@ export default function Userinput() {
                       onClick={() => handleEdit(index)}
                       className="btn btn-outline-primary"
                     >
+                      <i className="fa-solid fa-pen-to-square" />{" "}
                       Edit
                     </button>
                     &nbsp;
@@ -208,6 +252,7 @@ export default function Userinput() {
                       onClick={() => handleDelete(index)}
                       className="btn btn-outline-danger"
                     >
+                      <i className="fa-solid fa-trash" />{" "}
                       Delete
                     </button>
                   </td>
@@ -215,15 +260,13 @@ export default function Userinput() {
               ))}
             </tbody>
           </table>
+          </>
         )}
       </div>
       <br />
-      <button onClick={generateReport} className="btn btn-outline-primary shadow p-3 mb-5 rounded " style={{width: "730px"}}>
-        Generate Report
-      </button>
       {showReport && (
-        <div>
-          <h3>Age Group Distribution</h3>
+        <div className="container">
+          <HONE id="AGD">Age Group Distribution</HONE>
           <Bar
             data={{
               labels: ["Youngster", "Adult", "Old"],
@@ -231,16 +274,16 @@ export default function Userinput() {
                 {
                   label: "% of Age Groups",
                   data: [
-                    (youngster / users.length) * 100,
-                    (adult / users.length) * 100,
-                    (old / users.length) * 100
+                    (youngster / totalUsers) * 100,
+                    (adult / totalUsers) * 100,
+                    (old / totalUsers) * 100
                   ],
                   backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f"]
                 }
               ]
             }}
           />
-          <h3>Gender Distribution</h3>
+          <HONE>Gender Distribution</HONE>
           <Bar
             data={{
               labels: ["Male", "Female"],
@@ -248,8 +291,8 @@ export default function Userinput() {
                 {
                   label: "% of Genders",
                   data: [
-                    (male / users.length) * 100,
-                    (female / users.length) * 100
+                    (male / totalGenders) * 100,
+                    (female / totalGenders) * 100
                   ],
                   backgroundColor: ["#3e95cd", "#8e5ea2"]
                 }
@@ -261,4 +304,3 @@ export default function Userinput() {
     </>
   );
 }
-
