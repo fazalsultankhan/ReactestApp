@@ -2,28 +2,23 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Bar } from "react-chartjs-2";
 import 'chart.js/auto';
-import UserForm from "./UserForm";
 
 const HONE = styled.h4`
-  color: white;
-  margin-top: 50px;
-  margin-bottom: 20px;
+  color: black;
+  margin-top: 10px;
+  margin-bottom: 30px;
   margin-left :150px;
 `;
 
-const mygeneratingtable = {
-  display: 'flex',
-  gap: '120px',
+const InputfeildsContainer = {
+  padding: "2px 15px 15px 15px"
 };
 
-const indivisualTable = {
-  height: '400px',
-  width: '500px',
-};
-
-const mytablestyle = {
-  width: "100%",
-  textAlign: "center"
+const myflexbutton = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  marginTop: "15px"
 };
 
 const mygenerateButton = {
@@ -33,39 +28,39 @@ const mygenerateButton = {
   alignItems: "center",
   justifyContent: "center",
 };
-const options = {
-  plugins: {
-    legend: {
-      labels: {
-        color: 'white', // Label color
-      },
-    },
-  },
-  scales: {
-    x: {
-      grid: {
-        color: 'white', // Grid line color
-      },
-      ticks: {
-        color: 'white', // Axis label color
-      },
-    },
-    y: {
-      grid: {
-        color: 'white', // Grid line color
-      },
-      ticks: {
-        color: 'white', // Axis label color
-      },
-    },
-  },
-};
 
 const TwoButtons = {
   height: "50px",
   display: "flex",
   justifyItems: "center",
   float: "right"
+};
+
+const mytablestyle = {
+  width: "100%",
+  textAlign: "center"
+};
+
+const mystylecard = {
+  marginTop: "80px",
+  width: "42%",
+  marginLeft: "400px",
+  backgroundColor: "rgba(255,255,255,255)"
+};
+
+const selectOption = {
+  display: "flex",
+  alignItems: "center"
+};
+
+const mygeneratingtable = {
+  display: "flex",
+  gap: "10px",
+};
+
+const indivisualTable = {
+  height: "400px",
+  width: "400px"
 };
 
 export default function Userinput() {
@@ -95,6 +90,7 @@ export default function Userinput() {
     }
 
     if (editingIndex !== null) {
+      // Adjust age group counts based on the previous age of the user being edited
       const prevAge = parseInt(users[editingIndex].age);
       if (prevAge <= 18) {
         setYoungsters(youngsters - 1);
@@ -104,10 +100,11 @@ export default function Userinput() {
         setOlds(olds - 1);
       }
 
+      // Adjust gender counts based on the previous gender of the user being edited
       const prevGender = users[editingIndex].gender;
-      if (prevGender === "Male") {
+      if (prevGender === "males") {
         setMales(males - 1);
-      } else if (prevGender === "Female") {
+      } else if (prevGender === "females") {
         setFemales(females - 1);
       }
     }
@@ -120,9 +117,9 @@ export default function Userinput() {
       setOlds(olds + 1);
     }
 
-    if (gender === "Male") {
+    if (gender === "males") {
       setMales(males + 1);
-    } else if (gender === "Female") {
+    } else if (gender === "females") {
       setFemales(females + 1);
     }
 
@@ -170,9 +167,9 @@ export default function Userinput() {
       }
 
       // Adjust gender counts based on the gender of the user being deleted
-      if (userGender === "Male") {
+      if (userGender === "males") {
         setMales(males - 1);
-      } else if (userGender === "Female") {
+      } else if (userGender === "females") {
         setFemales(females - 1);
       }
 
@@ -199,23 +196,98 @@ export default function Userinput() {
     setEditingIndex(null);
   }
 
+  const handleGenderChange = (e) => {
+    setGender(e.target.value);
+  };
+
   const totalUsers = youngsters + adult + olds;
   const totalGenders = males + females;
 
   return (
     <>
       {showForm && (
-        <UserForm
-          name={name}
-          setName={setName}
-          age={age}
-          setAge={setAge}
-          gender={gender}
-          setGender={setGender}
-          handleSubmit={handleSubmit}
-          handleReset={handleReset}
-          editingIndex={editingIndex}
-        />
+        <div className="card" style={mystylecard}>
+          <div className="card-body">
+            <HONE>Register Account Form</HONE>
+            <div className="container" style={InputfeildsContainer}>
+              <form onSubmit={handleSubmit}>
+                <label htmlFor="inputPassword5" className="form-label">Name:</label>
+                <input type="text"
+                  id="inputname"
+                  placeholder="Enter your name"
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                /> <br />
+
+
+                <label htmlFor="inputage" className="form-label">Age:</label>
+                <input type="number"
+                  id="inputage"
+                  className="form-control"
+                  placeholder="Enter your age"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  required
+                />
+                <br />
+
+                <div style={selectOption}>
+                  <span style={{ marginRight: "10px" }}>Gender:</span>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <input
+                      type="radio"
+                      name="radio-btn"
+                      id="males-opt"
+                      value="males"
+                      checked={gender === "males"}
+                      onChange={handleGenderChange}
+                      required
+                    /> &nbsp;
+                    <label htmlFor="males-opt" style={{ marginRight: "10px" }}>Male</label>
+                  </div>
+                  <div style={{ marginLeft: "10px" }}>
+                    <input
+                      type="radio"
+                      name="radio-btn"
+                      id="females-opt"
+                      value="females"
+                      checked={gender === "females"}
+                      onChange={handleGenderChange}
+                      required
+                    /> {" "}
+                    <label htmlFor="females-opt"
+                      value="females"
+                      checked={gender === "females"}
+                      onChange={handleGenderChange}
+                      required
+                    /> 
+                    <label htmlFor="females-opt" style={{ marginRight: "10px" }}>Female</label>
+                  </div>
+                </div>
+                <br />
+                <div style={myflexbutton}>
+                  <button type="submit" className="btn btn-outline-success shadow" style={{ width: "160px" }}>
+                    {editingIndex !== null ? (<>
+                      <i className="fa-solid fa-pencil-alt" /> Update
+                    </>) : (<><i className="fa-regular fa-circle-check" /> Submit</>)}
+                  </button>
+                  &nbsp;
+                  <button style={{ width: "160px" }} type="reset" value="Reset" className="btn btn-outline-danger shadow" onClick={handleReset}>
+                    {name !== "" || age !== "" || gender !== "" ? (
+                      <> <i className="fa-solid fa-clock-rotate-left" /> Reset</>
+                    ) : (
+                      <> <i className="fa-solid fa-person-circle-xmark" /> Close</>
+                    )}
+                  </button>
+
+                </div>
+              </form>
+              <br />
+            </div>
+          </div>
+        </div>
       )}
 
       {showReport && (
@@ -224,7 +296,7 @@ export default function Userinput() {
             <HONE id="AGD" style={{ marginLeft: "100px" }}>Age Group Distribution</HONE>
             <Bar
               data={{
-                labels: ["Youngsters", "Adult", "Olds"],
+                labels: ["youngsters", "Adult", "olds"],
                 datasets: [
                   {
                     label: "% of Age Groups",
@@ -236,7 +308,7 @@ export default function Userinput() {
                     backgroundColor: ["black", "yellow", "green"]
                   }
                 ]
-              }} options={options}
+              }}
             />
           </div>
 
@@ -244,7 +316,7 @@ export default function Userinput() {
             <HONE style={{ marginLeft: "100px" }}>Gender Distribution</HONE>
             <Bar
               data={{
-                labels: ["Male", "Female"],
+                labels: ["males", "Females"],
                 datasets: [
                   {
                     label: "% of Genders",
@@ -255,7 +327,7 @@ export default function Userinput() {
                     backgroundColor: ["white", "indigo"]
                   }
                 ]
-              }} options={options}
+              }}
             />
           </div>
         </div>
@@ -268,14 +340,14 @@ export default function Userinput() {
               <br />
               <div className="gap-3" style={TwoButtons}>
                 <button onClick={() =>{setShowReport(true)}}
-                  className="btn btn-dark  p-3 mb-5 rounded "
+                  className="btn btn-outline-dark shadow p-3 mb-5 rounded "
                   style={mygenerateButton}>
                   <i className="fa-solid fa-chart-simple" />  &nbsp;
                   Generate Report
                 </button>
 
                 <button
-                  className="btn btn-dark p-3 mb-5 rounded"
+                  className="btn btn-outline-dark shadow p-3 mb-5 rounded"
                   style={mygenerateButton}
                   onClick={() => { setShowForm(true); setShowReport(false); setShowTable(false); }}
                 >
