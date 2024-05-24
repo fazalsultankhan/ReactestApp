@@ -30,14 +30,14 @@ const UserTable = ({ users, handleEdit, handleDelete, setShowReport, setShowForm
           <div className="gap-3" style={TwoButtons}>
             <button
               onClick={() => { setShowReport(true); }}
-              className="btn btn-outline-dark shadow p-3 mb-5 rounded"
+              className="btn btn-dark  p-3 mb-5 rounded"
               style={mygenerateButton}
             >
               <i className="fa-solid fa-chart-simple" /> &nbsp; Generate Report
             </button>
 
             <button
-              className="btn btn-outline-dark shadow p-3 mb-5 rounded"
+              className="btn btn-dark p-3 mb-5 rounded"
               style={mygenerateButton}
               onClick={() => { setShowForm(true); setShowReport(false); setShowTable(false); }}
             >
